@@ -2,16 +2,27 @@ import logo from "./logo.svg";
 import React from "react";
 import "./App.css";
 import { useEffect, useState } from "react";
-
+import translationEN from "./locales/en/translationEN.json";
+import translationTR from "./locales/tr/translationTR.json";
+import { initReactI18next } from "react-i18next";
 import axios from "axios";
+import i16n from "./i18n";
 
-import { Button, ButtonGroup, Navbar } from "react-bootstrap";
-
-import weatherlogo from "./assets/images/weatherlogo.jpg";
+import {
+  Button,
+  ButtonGroup,
+  Container,
+  Nav,
+  Navbar,
+  NavDropdown,
+} from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 //import {geolocated} from "react-native-geolocation-service";
 import { getSunrise, getSunset } from "sunrise-sunset-js";
 import { strictEqual } from "assert";
-import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
+//import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
+import GoogleMap from "./GoogleMap";
+import { Wrapper, Status } from "@googlemaps/react-wrapper";
 
 function App() {
   const [temperature, setTemperature] = useState("");
@@ -28,6 +39,9 @@ function App() {
   const [type, setType] = useState<string>("F");
 
   const [icon, setIcon] = useState("02d");
+  const [t, i18n] = useTranslation();
+
+  // const [ln, changeLanguage] = useState("");
 
   const getWeatherData = (lat: string, lon: string) => {
     const dataString = localStorage.getItem("batu");
@@ -68,9 +82,17 @@ function App() {
     });
   }, []);
 
-  useEffect(() => {
-    console.log("lat değişti  çalıştım");
-  }, [lat]);
+  // useEffect(() => {
+  //   i18n.changeLanguage();
+
+  //   console.log("language change");
+  // }, []);
+
+  const changeLanguage = (ln: any) => {
+    return () => {
+      i18n.changeLanguage(ln);
+    };
+  };
 
   function cToF() {
     if (type === "F") {
@@ -82,36 +104,61 @@ function App() {
     console.log("new calculation : ", (data.main.temp - 273).toFixed(2));
   }
 
-  // Initialize and add the map
-  // function initMap(): void {
-  //   // The location of Uluru
-  //   const uluru = { lat: -25.344, lng: 131.031 };
-  //   // The map, centered at Uluru
-  //   const map = new google.maps.Map(
-  //     document.getElementById("map") as HTMLElement,
-  //     {
-  //       zoom: 4,
-  //       center: uluru,
-  //     }
-  //   );
-
-  //   // The marker, positioned at Uluru
-  //   const marker = new google.maps.Marker({
-  //     position: uluru,
-  //     map: map,
-  //   });
-  // }
-
-  // declare global {
-  //   interface Window {
-  //     initMap: () => void;
-  //   }
-  // }
-  // window = initMap;
+  useEffect(() => {
+    console.log("lat değişti  çalıştım");
+  }, [lat]);
 
   return (
     <div>
-      <h1>Weather APP</h1>
+      <button
+        type="button"
+        onClick={() => {
+          i18n.changeLanguage("tr");
+          console.log("language change ");
+        }}
+      >
+        tr
+      </button>
+      <button
+        type="button"
+        onClick={() => {
+          i18n.changeLanguage("en");
+        }}
+      >
+        en
+      </button>
+      <Navbar bg="light" expand="lg">
+        <Container>
+          <Navbar.Brand href="#home">{t("appname")}</Navbar.Brand>
+
+          <Nav className="me-auto">
+            <NavDropdown title="Languages" id="basic-nav-dropdown">
+              <NavDropdown.Item
+                //type="button"
+                onClick={() => {
+                  i18n.changeLanguage("tr");
+                }}
+              >
+                Turkish
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Flag_of_Turkey.svg"
+                  width={10}
+                  height={10}
+                />
+              </NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item
+                onClick={() => {
+                  i18n.changeLanguage("en");
+                }}
+              >
+                English
+              </NavDropdown.Item>
+            </NavDropdown>
+          </Nav>
+        </Container>
+      </Navbar>
+      {/* <h1>{t("appname")}</h1> */}
       {/* <Navbar fixed="top" expand="xxl" variant="dark" bg="MyRed">
         <Navbar.Brand>
           <img src={weatherlogo} width="40px" height="40px" />
@@ -120,11 +167,12 @@ function App() {
       </Navbar> */}
       <div className="wrapper">
         <div>
+          <GoogleMap lat={lat} lon={lon}></GoogleMap>
           <form>
             <input
               className="searchbar transparent"
               type="text"
-              placeholder="enter latitude"
+              placeholder={t("Llatitude")}
               value={lat}
               onChange={(e) => setLat(e.target.value)}
             />
@@ -169,7 +217,8 @@ function App() {
         </div>
         <div className="panel">
           <h2>
-            {data && data.name} ,{data && data.sys.country}
+            {data && data.name} {data && ","}
+            {data && data.sys.country}
           </h2>
           <div className="weather" id="weather">
             <div className="group secondary">
@@ -186,6 +235,8 @@ function App() {
               <h1 className="temp" id="temp">
                 <i>
                   <img
+                    width="80px"
+                    height="80px"
                     src={
                       data &&
                       `http://openweathermap.org/img/wn/${data.weather[0].icon}.png`
@@ -229,48 +280,6 @@ function App() {
       ) : (
         <p>{data && (data.main.temp - 273).toFixed(2)}</p>
       )}
-      {/*
-         {type}
-        <br />
-        <br />
-        <br />
-        Country :{data && data.sys.country}
-        <br />
-        Saat: {data && Date}
-        <br />
-        <h1>sicaklik: {data && data.main.temp}</h1>
-      </div> */}
-      <br />
-      {/* <Navbar fixed="top" expand="xxl" variant="dark" bg="MyRed">
-        <Navbar.Brand>
-          <img src={weatherlogo} width="40px" height="40px" />
-          Weather APP
-        </Navbar.Brand>
-      </Navbar>
-      <br />
-      <br />
-      <input type="text" value={lat} onChange={(e) => setLat(e.target.value)} />
-      <input type="text" value={lon} onChange={(e) => setLon(e.target.value)} />
-      <Button
-        variant="success"
-        size="sm"
-        onClick={() => {
-          localStorage.clear();
-          getWeatherData(lat, lon);
-        }}
-      >
-        GET
-      </Button>
-      <Button
-        onClick={() => {
-          cToF();
-        }}
-      >
-        C TO F
-      </Button>
-
-
-      */}
     </div>
   );
 }
