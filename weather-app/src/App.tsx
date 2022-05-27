@@ -26,8 +26,8 @@ import { Wrapper, Status } from "@googlemaps/react-wrapper";
 
 function App() {
   const [temperature, setTemperature] = useState("");
-  const [lat, setLat] = useState("52.2297");
-  const [lon, setLon] = useState("21.0122");
+  const [lat, setLat] = useState("39.9272");
+  const [lon, setLon] = useState("32.8644");
   const [data, setData] = useState<any>(null);
   const [weatherName, setWeatherName] = useState("");
 
@@ -40,8 +40,20 @@ function App() {
 
   const [icon, setIcon] = useState("02d");
   const [t, i18n] = useTranslation();
-
+  const [number, setNumber] = useState("");
   // const [ln, changeLanguage] = useState("");
+
+  const LathandleChange = (e: any) => {
+    const result = e.target.value.replace(/\D/g, "");
+
+    setLat(result);
+  };
+
+  const LonghandleChange = (e: any) => {
+    const result = e.target.value.replace(/\D/g, "");
+
+    setLon(result);
+  };
 
   const getWeatherData = (lat: string, lon: string) => {
     const dataString = localStorage.getItem("batu");
@@ -82,18 +94,6 @@ function App() {
     });
   }, []);
 
-  // useEffect(() => {
-  //   i18n.changeLanguage();
-
-  //   console.log("language change");
-  // }, []);
-
-  const changeLanguage = (ln: any) => {
-    return () => {
-      i18n.changeLanguage(ln);
-    };
-  };
-
   function cToF() {
     if (type === "F") {
       setType("C");
@@ -110,29 +110,16 @@ function App() {
 
   return (
     <div>
-      <button
-        type="button"
-        onClick={() => {
-          i18n.changeLanguage("tr");
-          console.log("language change ");
-        }}
-      >
-        tr
-      </button>
-      <button
-        type="button"
-        onClick={() => {
-          i18n.changeLanguage("en");
-        }}
-      >
-        en
-      </button>
       <Navbar bg="light" expand="lg">
         <Container>
-          <Navbar.Brand href="#home">{t("appname")}</Navbar.Brand>
+          <Navbar.Brand>{t("appname")}</Navbar.Brand>
 
           <Nav className="me-auto">
-            <NavDropdown title="Languages" id="basic-nav-dropdown">
+            <NavDropdown
+              text-align="rigth"
+              title="Languages"
+              id="basic-nav-dropdown"
+            >
               <NavDropdown.Item
                 //type="button"
                 onClick={() => {
@@ -142,8 +129,8 @@ function App() {
                 Turkish
                 <img
                   src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Flag_of_Turkey.svg"
-                  width={10}
-                  height={10}
+                  width={22}
+                  height={22}
                 />
               </NavDropdown.Item>
               <NavDropdown.Divider />
@@ -153,67 +140,68 @@ function App() {
                 }}
               >
                 English
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag_of_the_United_Kingdom.svg"
+                  width={25}
+                  height={25}
+                />
               </NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Container>
       </Navbar>
-      {/* <h1>{t("appname")}</h1> */}
-      {/* <Navbar fixed="top" expand="xxl" variant="dark" bg="MyRed">
-        <Navbar.Brand>
-          <img src={weatherlogo} width="40px" height="40px" />
-          Weather APP
-        </Navbar.Brand>
-      </Navbar> */}
       <div className="wrapper">
         <div>
-          <GoogleMap lat={lat} lon={lon}></GoogleMap>
-          <form>
-            <input
-              className="searchbar transparent"
-              type="text"
-              placeholder={t("Llatitude")}
-              value={lat}
-              onChange={(e) => setLat(e.target.value)}
-            />
-            <input
-              className="searchbar transparent"
-              type="text"
-              placeholder="enter longitude"
-              value={lon}
-              onChange={(e) => setLon(e.target.value)}
-            />
+          <GoogleMap
+            lat={lat}
+            lon={lon}
+            setLat={setLat}
+            setLon={setLon}
+            updateData={getWeatherData}
+          ></GoogleMap>
 
-            <input
-              className="searchbar transparent"
-              id="search"
-              type="text"
-              placeholder="enter city, country"
-            />
-            <ButtonGroup>
-              <button
-                type="button"
-                className="button button-cold"
-                onClick={() => {
-                  localStorage.clear();
-                  getWeatherData(lat, lon);
-                  console.log("button aktif  mi");
-                }}
-              >
-                FIND
-              </button>
-              <button
-                type="button"
-                className="button button-cold"
-                onClick={() => {
-                  cToF();
-                  console.log("button aktif");
-                }}
-              >
-                C TO F
-              </button>
-            </ButtonGroup>
-          </form>
+          <div className=" yazivebuton">
+            <form>
+              <input
+                className="searchbar transparent"
+                type="text"
+                placeholder={t("Llatitude")}
+                value={lat}
+                onChange={(e) => LathandleChange(e)}
+              />
+
+              <input
+                className="searchbar transparent"
+                type="text"
+                placeholder="enter longitude"
+                value={lon}
+                onChange={(e) => LonghandleChange(e)}
+              />
+              <ButtonGroup>
+                <button
+                  type="button"
+                  className="button button-cold"
+                  onClick={() => {
+                    localStorage.clear();
+                    getWeatherData(lat, lon);
+                    console.log("button aktif  mi");
+                  }}
+                >
+                  FIND
+                </button>
+                <button
+                  type="button"
+                  className="button button-cold"
+                  onClick={() => {
+                    cToF();
+                    console.log("button aktif");
+                  }}
+                >
+                  C TO F
+                </button>
+              </ButtonGroup>
+            </form>
+          </div>
         </div>
         <div className="panel">
           <h2>
@@ -261,25 +249,6 @@ function App() {
         style={{ height: "5px", width: "100%", backgroundColor: "#226ba3" }}
       ></div>
       <div style={{ marginTop: "150px" }}></div>
-      {/* <div
-        style={{
-          height: "200px",
-          width: "450px",
-          backgroundColor: "#94e5ff",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          fontSize: "25px",
-        }}
-      >
-        */}
-      Location : {data && data.name}
-      <br />
-      {data && data.main && data.main.temp && type === "F" ? (
-        <p>{data && data.main.temp}</p>
-      ) : (
-        <p>{data && (data.main.temp - 273).toFixed(2)}</p>
-      )}
     </div>
   );
 }

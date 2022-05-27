@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,300,100');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/weather-icons/1.3.2/css/weather-icons.min.css');
+
 body{
   background-color: #3F51B5;
 }
@@ -23,14 +24,17 @@ a {
 a:hover,
 .active {opacity: 1;}
 
-.wrapper {
+ .wrapper {
 	width: 480px;
-	margin: 0 auto;
-}
+	 margin: 0 auto; 
+
+
+} 
 .searchbar,
 .button {
 	height: 45px;
-	margin: 1em 0 4em;
+	/* margin: 1em 0 4em; */
+	margin-bottom: auto;
 	padding: 0;
 	font: 400 1rem 'Roboto';
 	letter-spacing: 0.025em;
@@ -68,10 +72,14 @@ a:hover,
 	width: 100%;
 	display: inline-block;
 }
+
+
+
 .weather {
 	width: 100%;
 	margin-top: 20px;
 	display: inline-block;
+	
 }
 .city {
 	text-align: left;
@@ -116,8 +124,17 @@ a:hover,
 	margin: 0.25em 0;
 }
 
+.yazivebuton {
 
+	justify-content: flex-start;
 
+}
+.wrapper{
+	justify-content: flex-end;
+}
+.harita{
+	justify-content: flex-start;
+}
 
 .secondary {opacity: 0.7;}
 .transparent {background: transparent;}
