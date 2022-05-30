@@ -6,6 +6,8 @@ import { createCustomEqual } from "fast-equals";
 import { isLatLngLiteral } from "@googlemaps/typescript-guards";
 import { isConstructorDeclaration, setOriginalNode } from "typescript";
 import { setMaxListeners } from "process";
+import { useEffect } from "react";
+import { map } from "jquery";
 
 const render = (status: Status) => {
   return <h1>{status}</h1>;
@@ -14,21 +16,28 @@ const render = (status: Status) => {
 const GoogleMap = (props: any) => {
   // [START maps_react_map_component_app_state]
 
-  const [zoom, setZoom] = React.useState(3); // initial zoom
+  const [zoom, setZoom] = React.useState(6); // initial zoom
   const [center, setCenter] = React.useState<google.maps.LatLngLiteral>({
     lat: 0,
     lng: 0,
   });
+  useEffect(() => {
+    setCenter({
+      lat: parseFloat(props.lat),
+      lng: parseFloat(props.lon),
+    });
+  }, [props]);
 
   const onClick = (e: google.maps.MapMouseEvent) => {
     // avoid directly mutating state
-
-    console.log("e.latLng!", e.latLng);
-    console.log("e.latLng!", e.latLng && e.latLng.lat());
+    console.log("e.latLng!: ", e.latLng && e.latLng.lng());
+    console.log("e.latLng!: ", e.latLng && e.latLng.lat());
     if (e.latLng) {
       props.setLat(e.latLng.lat().toString());
       props.setLon(e.latLng.lng().toString());
+
       localStorage.clear();
+      props.setClicks([...props.clicks, e.latLng]); // spread operator
       props.updateData(e.latLng.lat().toString(), e.latLng.lng().toString());
     }
   };
@@ -40,27 +49,50 @@ const GoogleMap = (props: any) => {
   };
 
   return (
-    <div className="harita">
-      <div style={{ display: "flex", height: "500px", width: "500px" }}>
-        <Wrapper
-          apiKey={"AIzaSyCfy-kvoje4j91sQ_ARMpol5sZa7j8XatE"}
-          render={render}
-        >
-          <Map
-            center={center}
-            onClick={onClick}
-            onIdle={onIdle}
-            zoom={zoom}
-            style={{ flexGrow: "1", height: "100%" }}
+    <div>
+      <div>
+        {" "}
+        <input
+          value={zoom}
+          onChange={(e) => setZoom(parseInt(e.target.value))}
+          type="range"
+          id="vol"
+          name="vol"
+          min={1}
+          max={15}
+        />
+      </div>
+      <div className="harita">
+        <div style={{ display: "flex", height: "500px", width: "500px" }}>
+          {/* <input
+          value={zoom}
+          onChange={(e) => setZoom(parseInt(e.target.value))}
+          type="range"
+          id="vol"
+          name="vol"
+          min={1}
+          max={15}
+        /> */}
+          <Wrapper
+            apiKey={"AIzaSyCfy-kvoje4j91sQ_ARMpol5sZa7j8XatE"}
+            render={render}
           >
-            <Marker
-              position={{
-                lat: parseFloat(props.lat),
-                lng: parseFloat(props.lon),
-              }}
-            />
-          </Map>
-        </Wrapper>
+            <Map
+              center={center}
+              onClick={onClick}
+              onIdle={onIdle}
+              zoom={zoom}
+              style={{ flexGrow: "1", height: "100%" }}
+            >
+              <Marker
+                position={{
+                  lat: parseFloat(props.lat),
+                  lng: parseFloat(props.lon),
+                }}
+              />
+            </Map>
+          </Wrapper>
+        </div>
       </div>
     </div>
   );

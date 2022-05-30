@@ -1,6 +1,11 @@
 {
     "appname":"Hava Durumu",
     "Llatitude" : "Enlem",
-    "Llongitude":"Boylam"
-
+    "Llongitude":"Boylam",
+    "find":"Ara",
+    "clear":"Temizle",
+    "Languages":"Diller",
+    "Wind":"Rüzgar:",
+    "Humidity":"Nem:"
 }
+

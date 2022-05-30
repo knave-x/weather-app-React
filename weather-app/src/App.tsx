@@ -23,6 +23,7 @@ import { strictEqual } from "assert";
 //import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import GoogleMap from "./GoogleMap";
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
+import { getCLS } from "web-vitals";
 
 function App() {
   const [temperature, setTemperature] = useState("");
@@ -41,7 +42,7 @@ function App() {
   const [icon, setIcon] = useState("02d");
   const [t, i18n] = useTranslation();
   const [number, setNumber] = useState("");
-  // const [ln, changeLanguage] = useState("");
+  const [clicks, setClicks] = useState([]);
 
   const LathandleChange = (e: any) => {
     const result = e.target.value.replace(/\D/g, "");
@@ -117,11 +118,10 @@ function App() {
           <Nav className="me-auto">
             <NavDropdown
               text-align="rigth"
-              title="Languages"
+              title={t("Languages")}
               id="basic-nav-dropdown"
             >
               <NavDropdown.Item
-                //type="button"
                 onClick={() => {
                   i18n.changeLanguage("tr");
                 }}
@@ -158,8 +158,11 @@ function App() {
             setLat={setLat}
             setLon={setLon}
             updateData={getWeatherData}
+            clicks={clicks}
+            setClicks={setClicks}
           ></GoogleMap>
-
+        </div>
+        <div className="panel">
           <div className=" yazivebuton">
             <form>
               <input
@@ -187,23 +190,32 @@ function App() {
                     console.log("button aktif  mi");
                   }}
                 >
-                  FIND
+                  {t("find")}
                 </button>
                 <button
                   type="button"
                   className="button button-cold"
                   onClick={() => {
+                    //setClicks([])
                     cToF();
                     console.log("button aktif");
                   }}
                 >
                   C TO F
                 </button>
+
+                <button
+                  type="button"
+                  className="button button-cold"
+                  onClick={() => {
+                    setClicks([]);
+                  }}
+                >
+                  {t("clear")}
+                </button>
               </ButtonGroup>
             </form>
           </div>
-        </div>
-        <div className="panel">
           <h2>
             {data && data.name} {data && ","}
             {data && data.sys.country}
@@ -215,8 +227,13 @@ function App() {
               </h3>
             </div>
             <div className="group secondary">
-              <h3>Wind: {data && data.wind.speed} mph </h3>
-              <h3>Humidtiy:{data && data.main.humidity}%</h3>
+              <h3>
+                {t("Wind")} {data && data.wind.speed} mph{" "}
+              </h3>
+              <h3>
+                {t("Humidity")}
+                {data && data.main.humidity}%
+              </h3>
             </div>
             <div className="temperature" id="temperature">
               <h1></h1>
@@ -244,11 +261,18 @@ function App() {
             <div className="forecast" id="forecast"></div>
           </div>
         </div>
+
+        <div className=" logtextare">
+          {clicks.map((click: any) => (
+            <textarea>{`lat: ${click.lat().toFixed(3)}
+                   lon: ${click.lng().toFixed(3)}`}</textarea>
+          ))}
+        </div>
       </div>
-      <div
+      {/* <div
         style={{ height: "5px", width: "100%", backgroundColor: "#226ba3" }}
-      ></div>
-      <div style={{ marginTop: "150px" }}></div>
+      ></div> */}
+      {/* <div style={{ marginTop: "150px" }}></div> */}
     </div>
   );
 }

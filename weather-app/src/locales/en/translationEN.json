@@ -1,5 +1,8 @@
 {
     "appname":"Weather APP",
     "Llatitude" :"Enter Latitude",
-    "Llongitude":"Enter Longitude"
+    "Llongitude":"Enter Longitude",
+    "find":"Find",
+    "clear":"Clear",
+    "Languages":"Languages"
 }

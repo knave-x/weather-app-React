@@ -16,6 +16,9 @@ h4 {
 	letter-spacing: 0.025em;
 	margin: 0; padding: 0;
 }
+
+
+
 a {
 	color: white;
 	opacity: 0.54;
@@ -26,7 +29,11 @@ a:hover,
 
  .wrapper {
 	width: 480px;
-	 margin: 0 auto; 
+	 margin-top: 20px;
+	 margin-left: 20px;
+	 display: flex;
+	 flex-direction: row;
+	 
 
 
 } 
@@ -34,7 +41,7 @@ a:hover,
 .button {
 	height: 45px;
 	/* margin: 1em 0 4em; */
-	margin-bottom: auto;
+	margin-top: 5px;
 	padding: 0;
 	font: 400 1rem 'Roboto';
 	letter-spacing: 0.025em;
@@ -71,12 +78,14 @@ a:hover,
 .panel {
 	width: 100%;
 	display: inline-block;
+	margin-left: 30px;
 }
 
 
 
 .weather {
-	width: 100%;
+	width: 420px;
+	height: 200px;
 	margin-top: 20px;
 	display: inline-block;
 	
@@ -89,15 +98,15 @@ a:hover,
 	color: rgba(255, 255, 255, 0.7);
 }
 .group {
-	width: 165px;
+	width: 300px;
 	margin-bottom: 20px;
-	text-align: right;
+	text-align: revert;
 	float: right;
 	clear: both;
 }
 .temp {
-	font-size: 4.5em;
-	font-weight: 300;
+	font-size: 3.5em;
+	font-weight: 500;
 	line-height: 1;
 }
 .celsius,
@@ -123,18 +132,15 @@ a:hover,
 	font-weight: 300;
 	margin: 0.25em 0;
 }
-
-.yazivebuton {
-
-	justify-content: flex-start;
-
+.logtextare{
+	background-color: white;
+	height: 300;
+	width: 100;
+	
+	
+	
 }
-.wrapper{
-	justify-content: flex-end;
-}
-.harita{
-	justify-content: flex-start;
-}
+
 
 .secondary {opacity: 0.7;}
 .transparent {background: transparent;}
