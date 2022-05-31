@@ -51,7 +51,6 @@ const GoogleMap = (props: any) => {
   return (
     <div>
       <div>
-        {" "}
         <input
           value={zoom}
           onChange={(e) => setZoom(parseInt(e.target.value))}

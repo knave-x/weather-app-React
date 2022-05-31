@@ -24,6 +24,7 @@ import { strictEqual } from "assert";
 import GoogleMap from "./GoogleMap";
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import { getCLS } from "web-vitals";
+import RssFeed from "./rssfeed";
 
 function App() {
   const [temperature, setTemperature] = useState("");
@@ -264,14 +265,17 @@ function App() {
 
         <div className=" logtextare">
           {clicks.map((click: any) => (
-            <textarea>{`lat: ${click.lat().toFixed(3)}
-                   lon: ${click.lng().toFixed(3)}`}</textarea>
+            <p className="txtComment">{`lat: ${click.lat().toFixed(3)}
+                   lon: ${click.lng().toFixed(3)}`}</p>
           ))}
         </div>
+        <div className="rss">
+          <h2>Rss FeeD</h2>
+          <RssFeed></RssFeed>
+        </div>
       </div>
-      {/* <div
-        style={{ height: "5px", width: "100%", backgroundColor: "#226ba3" }}
-      ></div> */}
+
+      {<div></div>}
       {/* <div style={{ marginTop: "150px" }}></div> */}
     </div>
   );

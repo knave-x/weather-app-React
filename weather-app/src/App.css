@@ -22,13 +22,13 @@ h4 {
 a {
 	color: white;
 	opacity: 0.54;
-	text-decoration: none;
+	/* text-decoration: none; */
 }
 a:hover,
 .active {opacity: 1;}
 
  .wrapper {
-	width: 480px;
+	width: 1440px;
 	 margin-top: 20px;
 	 margin-left: 20px;
 	 display: flex;
@@ -134,11 +134,15 @@ a:hover,
 }
 .logtextare{
 	background-color: white;
-	height: 300;
-	width: 100;
-	
-	
-	
+	height: 500px;
+	width: 300;
+	margin-right: 300px;
+
+	border: 1px solid black;
+}
+.rss{
+	margin-left: 50px;
+	background-color: #FF6F00;
 }
 
 
