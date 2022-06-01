@@ -33,12 +33,31 @@ const GoogleMap = (props: any) => {
     console.log("e.latLng!: ", e.latLng && e.latLng.lng());
     console.log("e.latLng!: ", e.latLng && e.latLng.lat());
     if (e.latLng) {
-      props.setLat(e.latLng.lat().toString());
-      props.setLon(e.latLng.lng().toString());
+      props.setLat(
+        e.latLng
+          .lat()
+          .toFixed(3)
+          .toString()
+      );
+      props.setLon(
+        e.latLng
+          .lng()
+          .toFixed(3)
+          .toString()
+      );
 
       localStorage.clear();
-      props.setClicks([...props.clicks, e.latLng]); // spread operator
+      props.setClicks([
+        ...props.clicks,
+        {
+          latLng: e.latLng,
+          location: props.data.name,
+          location1: props.data.sys.country,
+        },
+      ]); // spread operator
       props.updateData(e.latLng.lat().toString(), e.latLng.lng().toString());
+      console.log("lokasyon çalışıyor mu :", props.data.name);
+      console.log("lokasyon1 : ", props.data.sys.country);
     }
   };
 

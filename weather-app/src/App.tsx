@@ -11,6 +11,7 @@ import i16n from "./i18n";
 import {
   Button,
   ButtonGroup,
+  Card,
   Container,
   Nav,
   Navbar,
@@ -161,6 +162,7 @@ function App() {
             updateData={getWeatherData}
             clicks={clicks}
             setClicks={setClicks}
+            data={data}
           ></GoogleMap>
         </div>
         <div className="panel">
@@ -265,8 +267,22 @@ function App() {
 
         <div className=" logtextare">
           {clicks.map((click: any) => (
-            <p className="txtComment">{`lat: ${click.lat().toFixed(3)}
+            <div>
+            {/* <p className="txtComment">{`lat: ${click.lat().toFixed(3)}
                    lon: ${click.lng().toFixed(3)}`}</p>
+
+                   <p> {`Location : ${data && data.name}${data && ","}${data && data.sys.country}`}</p> */}
+
+
+<Card style={{ width: "10rem" }}>
+              
+              <Card.Body>
+                <Card.Title>{click.location1},{click.location}</Card.Title>
+                <Card.Text> Mekansahibi</Card.Text>
+                
+              </Card.Body>
+            </Card>
+                 </div>  
           ))}
         </div>
         <div className="rss">
