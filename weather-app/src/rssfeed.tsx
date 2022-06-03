@@ -7,44 +7,19 @@ export default function RssFeed() {
   const [rssUrl, setRssUrl] = useState("");
   const [rsss, setRsss] = useState<any>(null);
 
-  // const getData = async () => {
-  //   let rss = await parse("https://rss.art19.com/apology-line");
-  //   console.log("rss : ", rss);
-  //   setItems(rss.items);
-  //   console.log(JSON.stringify(rss, null, 3));
-  // };
-  // useEffect(() => {
-  //   getData();
-  // }, []);
-
-  // return (
-  //   <div className="App">
-  //     {items.map((item: any) => {
-  //       return (
-  //         <div>
-  //           <a>{item.title}</a>
-
-  //           <br />
-  //           <a>{item.itunes_duration}</a>
-  //           <p>{item.author}</p>
-  //           <a href={item.link}>{item.link}</a>
-  //           <div></div>
-  //         </div>
-  //       );
-  //     })}
-  //   </div>
-  // );
-
+  
   const getData = async () => {
     let rss = await parse(
       "https://cors-anywhere.herokuapp.com/https://www.nhc.noaa.gov/gtwo.xml"
     );
-    console.log("rss : ", rss);
+    console.log("rss : ");
     setRsss(rss);
     console.log(JSON.stringify(rss, null, 3));
   };
   useEffect(() => {
-    getData();
+    setInterval(() => {
+      getData();
+    }, 5000)
   }, []);
   if (!rsss) {
     return <div></div>;

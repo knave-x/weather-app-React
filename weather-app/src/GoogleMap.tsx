@@ -48,12 +48,13 @@ const GoogleMap = (props: any) => {
 
       localStorage.clear();
       props.setClicks([
-        ...props.clicks,
         {
           latLng: e.latLng,
           location: props.data.name,
           location1: props.data.sys.country,
         },
+        ...props.clicks,
+ 
       ]); // spread operator
       props.updateData(e.latLng.lat().toString(), e.latLng.lng().toString());
       console.log("lokasyon çalışıyor mu :", props.data.name);

@@ -76,7 +76,7 @@ a:hover,
 	width: 100px;
 }
 .panel {
-	width: 100%;
+	width: 60%;
 	display: inline-block;
 	margin-left: 30px;
 }
@@ -139,7 +139,7 @@ a:hover,
 
 	background-color: #F0FFFF;
 	width: 400px;
-	height: 500px;
+	height: 503px;
 	border: 1px solid black;
 	overflow: scroll;
 	margin-top: 20px;

@@ -7,6 +7,7 @@ import translationTR from "./locales/tr/translationTR.json";
 import { initReactI18next } from "react-i18next";
 import axios from "axios";
 import i16n from "./i18n";
+import ProductsFeed from './ProdutcsFeed';
 
 import {
   Button,
@@ -33,6 +34,8 @@ function App() {
   const [lon, setLon] = useState("32.8644");
   const [data, setData] = useState<any>(null);
   const [weatherName, setWeatherName] = useState("");
+
+  const [lang, setLang] = useState();
 
   const [Latitude, setLatitude] = useState("");
   const [Longitude, setLongitude] = useState("");
@@ -66,7 +69,7 @@ function App() {
     } else {
       axios({
         method: "GET",
-        url: `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=cd9b8b22e3d2107dd66b235df271bdf1`,
+        url: `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=cd9b8b22e3d2107dd66b235df271bdf1&lang=${i16n.language}`,
       })
         .then((Response) => {
           console.log(Response.data);
@@ -110,6 +113,7 @@ function App() {
   useEffect(() => {
     console.log("lat değişti  çalıştım");
   }, [lat]);
+  
 
   return (
     <div>
@@ -268,21 +272,17 @@ function App() {
         <div className=" logtextare">
           {clicks.map((click: any) => (
             <div>
-            {/* <p className="txtComment">{`lat: ${click.lat().toFixed(3)}
-                   lon: ${click.lng().toFixed(3)}`}</p>
-
-                   <p> {`Location : ${data && data.name}${data && ","}${data && data.sys.country}`}</p> */}
-
-
-<Card style={{ width: "10rem" }}>
-              
-              <Card.Body>
-                <Card.Title>{click.location1},{click.location}</Card.Title>
-                <Card.Text> Mekansahibi</Card.Text>
-                
-              </Card.Body>
-            </Card>
-                 </div>  
+              <Card style={{ width: "12rem" }}>
+                <Card.Body>
+                  <Card.Title>
+                    {click.location1},{click.location}
+                  </Card.Title>
+                  {/* <Card.Text> {`lat: ${click.lat().toFixed(3)}`}</Card.Text> */}
+                  <Card.Text>Lon: {click.latLng.lng().toFixed(3)}</Card.Text>
+                  <Card.Text> lon: {click.latLng.lat().toFixed(3)}</Card.Text>
+                </Card.Body>
+              </Card>
+            </div>
           ))}
         </div>
         <div className="rss">
@@ -290,6 +290,12 @@ function App() {
           <RssFeed></RssFeed>
         </div>
       </div>
+      <div className="w-100">
+        Product Feeds
+            <ProductsFeed />
+
+      </div>
+
 
       {<div></div>}
       {/* <div style={{ marginTop: "150px" }}></div> */}
