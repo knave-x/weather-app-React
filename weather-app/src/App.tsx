@@ -7,7 +7,7 @@ import translationTR from "./locales/tr/translationTR.json";
 import { initReactI18next } from "react-i18next";
 import axios from "axios";
 import i16n from "./i18n";
-import ProductsFeed from './ProdutcsFeed';
+import ProductsFeed from "./ProdutcsFeed";
 
 import {
   Button,
@@ -89,8 +89,6 @@ function App() {
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(function(position) {
-      console.log("Latitude is :", position.coords.latitude);
-      console.log("Longitude is :", position.coords.longitude);
       setLat(position.coords.latitude.toString());
       setLon(position.coords.longitude.toString());
       getWeatherData(
@@ -106,14 +104,7 @@ function App() {
     } else {
       setType("F");
     }
-
-    console.log("new calculation : ", (data.main.temp - 273).toFixed(2));
   }
-
-  useEffect(() => {
-    console.log("lat değişti  çalıştım");
-  }, [lat]);
-  
 
   return (
     <div>
@@ -292,10 +283,9 @@ function App() {
       </div>
       <div className="w-100">
         Product Feeds
-            <ProductsFeed />
-
+        <ProductsFeed />
+        <div></div>
       </div>
-
 
       {<div></div>}
       {/* <div style={{ marginTop: "150px" }}></div> */}

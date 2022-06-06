@@ -4,5 +4,7 @@
     "Llongitude":"Enter Longitude",
     "find":"Find",
     "clear":"Clear",
-    "Languages":"Languages"
+    "Languages":"Languages",
+    "Wind":"Wind:",
+    "Humidity":"Humidity:"
 }

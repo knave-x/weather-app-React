@@ -6,8 +6,11 @@ import { createCustomEqual } from "fast-equals";
 import { isLatLngLiteral } from "@googlemaps/typescript-guards";
 import { isConstructorDeclaration, setOriginalNode } from "typescript";
 import { setMaxListeners } from "process";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { map } from "jquery";
+
+import { Marker } from "./Marker";
+import axios from "axios";
 
 const render = (status: Status) => {
   return <h1>{status}</h1>;
@@ -15,7 +18,7 @@ const render = (status: Status) => {
 
 const GoogleMap = (props: any) => {
   // [START maps_react_map_component_app_state]
-
+  const [satellite, setSatellite] = useState<any>(null);
   const [zoom, setZoom] = React.useState(6); // initial zoom
   const [center, setCenter] = React.useState<google.maps.LatLngLiteral>({
     lat: 0,
@@ -30,8 +33,7 @@ const GoogleMap = (props: any) => {
 
   const onClick = (e: google.maps.MapMouseEvent) => {
     // avoid directly mutating state
-    console.log("e.latLng!: ", e.latLng && e.latLng.lng());
-    console.log("e.latLng!: ", e.latLng && e.latLng.lat());
+
     if (e.latLng) {
       props.setLat(
         e.latLng
@@ -54,19 +56,33 @@ const GoogleMap = (props: any) => {
           location1: props.data.sys.country,
         },
         ...props.clicks,
- 
       ]); // spread operator
       props.updateData(e.latLng.lat().toString(), e.latLng.lng().toString());
-      console.log("lokasyon çalışıyor mu :", props.data.name);
-      console.log("lokasyon1 : ", props.data.sys.country);
     }
   };
 
   const onIdle = (m: google.maps.Map) => {
-    console.log("onIdle");
     setZoom(m.getZoom()!);
     setCenter(m.getCenter()!.toJSON());
   };
+  const getData = async () => {
+    axios
+      .get("http://api.open-notify.org/iss-now.json")
+      .then(function(response) {
+        setSatellite(response.data);
+        console.log("daily satellite: ", response);
+      })
+      .catch(function(error) {
+        // handle error
+        console.log(error);
+      });
+  };
+  useEffect(() => {
+    setInterval(() => {
+      getData();
+    }, 7000);
+    getData();
+  }, []);
 
   return (
     <div>
@@ -109,6 +125,17 @@ const GoogleMap = (props: any) => {
                   lng: parseFloat(props.lon),
                 }}
               />
+              {satellite && (
+                <Marker
+                  icon={
+                    "https://img.freepik.com/free-vector/satellite-icon-grey-blue_67515-100.jpg?w=20"
+                  }
+                  position={{
+                    lat: parseFloat(satellite.iss_position.latitude),
+                    lng: parseFloat(satellite.iss_position.longitude),
+                  }}
+                />
+              )}
             </Map>
           </Wrapper>
         </div>
@@ -181,33 +208,6 @@ const Map: React.FC<MapProps> = ({
   );
   // [END maps_react_map_component_return]
 };
-
-// [START maps_react_map_marker_component]
-const Marker: React.FC<google.maps.MarkerOptions> = (options) => {
-  const [marker, setMarker] = React.useState<google.maps.Marker>();
-
-  React.useEffect(() => {
-    if (!marker) {
-      setMarker(new google.maps.Marker());
-    }
-
-    // remove marker from map on unmount
-    return () => {
-      if (marker) {
-        marker.setMap(null);
-      }
-    };
-  }, [marker]);
-
-  React.useEffect(() => {
-    if (marker) {
-      marker.setOptions(options);
-    }
-  }, [marker, options]);
-
-  return null;
-};
-// [END maps_react_map_marker_component]
 
 const deepCompareEqualsForMaps = createCustomEqual(
   (deepEqual) => (a: any, b: any) => {
