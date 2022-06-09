@@ -6,5 +6,8 @@
     "clear":"Clear",
     "Languages":"Languages",
     "Wind":"Wind:",
-    "Humidity":"Humidity:"
+    "Humidity":"Humidity:",
+    "LLlatitude" : "Lat",
+    "LLlongitude":"Lng",
+    "weather":"Weather"
 }

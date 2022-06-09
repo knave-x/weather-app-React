@@ -4,13 +4,18 @@ import * as ReactDom from "react-dom";
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import { createCustomEqual } from "fast-equals";
 import { isLatLngLiteral } from "@googlemaps/typescript-guards";
-import { isConstructorDeclaration, setOriginalNode } from "typescript";
+import {
+  isConstructorDeclaration,
+  isGetAccessorDeclaration,
+  setOriginalNode,
+} from "typescript";
 import { setMaxListeners } from "process";
 import { useEffect, useState } from "react";
 import { map } from "jquery";
 
 import { Marker } from "./Marker";
 import axios from "axios";
+import { Polyline } from "@react-google-maps/api";
 
 const render = (status: Status) => {
   return <h1>{status}</h1>;
@@ -20,6 +25,7 @@ const GoogleMap = (props: any) => {
   // [START maps_react_map_component_app_state]
   const [satellite, setSatellite] = useState<any>(null);
   const [zoom, setZoom] = React.useState(6); // initial zoom
+  const [line, setLine] = useState<any[]>([]);
   const [center, setCenter] = React.useState<google.maps.LatLngLiteral>({
     lat: 0,
     lng: 0,
@@ -54,12 +60,25 @@ const GoogleMap = (props: any) => {
           latLng: e.latLng,
           location: props.data.name,
           location1: props.data.sys.country,
+          weather: props.data.weather[0].description,
         },
         ...props.clicks,
       ]); // spread operator
       props.updateData(e.latLng.lat().toString(), e.latLng.lng().toString());
     }
   };
+
+  useEffect(() => {
+    if (satellite) {
+      setLine([
+        ...line,
+        {
+          lat: parseFloat(satellite.iss_position.latitude),
+          lng: parseFloat(satellite.iss_position.longitude),
+        },
+      ]);
+    }
+  }, [satellite]);
 
   const onIdle = (m: google.maps.Map) => {
     setZoom(m.getZoom()!);
@@ -99,15 +118,6 @@ const GoogleMap = (props: any) => {
       </div>
       <div className="harita">
         <div style={{ display: "flex", height: "500px", width: "500px" }}>
-          {/* <input
-          value={zoom}
-          onChange={(e) => setZoom(parseInt(e.target.value))}
-          type="range"
-          id="vol"
-          name="vol"
-          min={1}
-          max={15}
-        /> */}
           <Wrapper
             apiKey={"AIzaSyCfy-kvoje4j91sQ_ARMpol5sZa7j8XatE"}
             render={render}
@@ -136,6 +146,7 @@ const GoogleMap = (props: any) => {
                   }}
                 />
               )}
+              <Polyline path={line} />
             </Map>
           </Wrapper>
         </div>

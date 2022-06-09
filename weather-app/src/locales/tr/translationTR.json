@@ -6,7 +6,10 @@
     "clear":"Temizle",
     "Languages":"Diller",
     "Wind":"Rüzgar:",
-   "Humidity":"Nem:"
+   "Humidity":"Nem:",
+   "LLlatitude" : "Enlem",
+    "LLlongitude":"Boylam",
+    "weather":"Hava Durumu"
     
 }
 

@@ -108,7 +108,7 @@ function App() {
 
   return (
     <div>
-      <Navbar bg="light" expand="lg">
+      <Navbar bg="light" expand="lg" sticky="top">
         <Container>
           <Navbar.Brand>{t("appname")}</Navbar.Brand>
 
@@ -269,8 +269,15 @@ function App() {
                     {click.location1},{click.location}
                   </Card.Title>
                   {/* <Card.Text> {`lat: ${click.lat().toFixed(3)}`}</Card.Text> */}
-                  <Card.Text>Lon: {click.latLng.lng().toFixed(3)}</Card.Text>
-                  <Card.Text> lon: {click.latLng.lat().toFixed(3)}</Card.Text>
+                  <Card.Text>
+                    {t("LLlongitude")}: {click.latLng.lng().toFixed(3)}
+                  </Card.Text>
+                  <Card.Text>
+                    {t("LLlatitude")} : {click.latLng.lat().toFixed(3)}
+                  </Card.Text>
+                  <Card.Text>
+                    {t("weather")}: {click.weather}
+                  </Card.Text>
                 </Card.Body>
               </Card>
             </div>
